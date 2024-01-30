@@ -15,13 +15,13 @@ Raytracing engine written in Kotlin.
 #### Material interaction:
 - [x] Diffuse reflection
 - [x] Specular reflection
-- [ ] Mirror reflection
+- [x] Mirror reflection
 - [ ] Refraction
 
 #### Objects:
 - [x] Planes
 - [x] Spheres
-- [ ] Triangle meshes
+- [x] Triangle meshes
 
 #### Lights:
 - [x] Ambient

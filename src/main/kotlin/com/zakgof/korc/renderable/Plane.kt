@@ -1,11 +1,10 @@
 package com.zakgof.korc.renderable
 
-import com.zakgof.korc.material.DiffuseMaterial
 import com.zakgof.korc.math.Ray
 import com.zakgof.korc.math.Vec3
 import com.zakgof.korc.tracer.Intersection
 
-class Plane(val point: Vec3, val normal: Vec3) : Renderable {
+class Plane(val point: Vec3, val normal: Vec3) : Geometry {
 
     val PUSH = 0.001
 
@@ -16,8 +15,7 @@ class Plane(val point: Vec3, val normal: Vec3) : Renderable {
             return Intersection(
                 rayT = t,
                 position = pos.plus(normal.mult(PUSH)),
-                normal = normal,
-                material = DiffuseMaterial()
+                normal = normal
             )
         }
         return null

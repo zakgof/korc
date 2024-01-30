@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("de.javagl:obj:0.4.0")
 }
 
 tasks.test {

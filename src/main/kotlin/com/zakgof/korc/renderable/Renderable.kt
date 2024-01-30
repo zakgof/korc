@@ -1,8 +1,5 @@
 package com.zakgof.korc.renderable
 
-import com.zakgof.korc.math.Ray
-import com.zakgof.korc.tracer.Intersection
+import com.zakgof.korc.material.Material
 
-interface Renderable {
-    fun intersection(ray: Ray): Intersection?
-}
+data class Renderable(val geometry : Geometry, val material : Material)

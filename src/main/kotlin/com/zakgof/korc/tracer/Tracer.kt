@@ -23,31 +23,39 @@ class Tracer(val scene: Scene) {
             return colorRay.color
         }
 
-        val intersection = scene.renderables
-            .map { it.intersection(colorRay.ray) }
-            .filterNotNull()
-            .minWithOrNull(Comparator.comparingDouble { it!!.rayT })
+        val pairRenderableIntersection = scene.renderables
+            .map { Pair(it, it.geometry.intersection(colorRay.ray)) }
+            .filter { it.second != null }
+            .minByOrNull { it.second!!.rayT }
 
+        pairRenderableIntersection?.let { pair ->
+            val renderable = pair.first
+            val intersection = pair.second!!
 
-        intersection?.let { hit ->
-            val point = hit.position
-            val material = hit.material
+            val point = intersection.position
+            val normal = intersection.normal
+            val material = renderable.material
 
-            val childColorRays = material.interact(colorRay)
-            val childColor = childColorRays.fold(Color.BLACK) { acc: Color, childColorRay ->
-                acc.plus(trace(childColorRay))
-            }
+            val childColorRays = material.interact(point, normal, colorRay)
+            val childColor =
+                childColorRays.fold(Color.BLACK) { acc: Color, childColorRay -> acc.plus(trace(childColorRay)) }
 
             val directLightColor = scene.lightSources
-                .filter { isLit(point, it)}
-                .map { material.directLightResponse(point = point,
-                    incident = it.directionAt(point),
-                    normal = hit.normal,
-                    lightColor = it.colorAt(point),
-                    direction = colorRay.ray.direction.negate())}
-                .fold(Color.BLACK) { acc: Color, color -> acc.plus(color)}
+                .filter { isLit(point, it) }
+                .map {
+                    material.directLightResponse(
+                        point = point,
+                        incident = it.directionAt(point),
+                        normal = normal,
+                        lightColor = it.colorAt(point),
+                        direction = colorRay.ray.direction.negate()
+                    )
+                }
+                .fold(Color.BLACK) { acc: Color, color -> acc.plus(color) }
 
-            return childColor.plus(directLightColor)
+            val finalColor = childColor.plus(directLightColor)
+
+            return finalColor
         }
         return Color(0.8, 0.8, 1.0) // TODO: sky color
     }
@@ -55,7 +63,7 @@ class Tracer(val scene: Scene) {
     private fun isLit(position: Vec3, light: LightSource): Boolean {
         val ray = Ray(position, light.directionAt(position).negate())
         return !scene.renderables
-            .map { it.intersection(ray) }// TODO can be optimized
+            .map { it.geometry.intersection(ray) }// TODO can be optimized
             .filterNotNull()
             .any()
     }

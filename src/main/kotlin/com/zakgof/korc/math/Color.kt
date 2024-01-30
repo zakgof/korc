@@ -10,5 +10,11 @@ data class Color(val r: Double, val g: Double, val b: Double) {
     }
 
     fun multiply(s: Double): Color = Color(s * r, s * g, s * b)
-    fun plus(c: Color): Color = Color(r + c.r, r + c.g, r + c.b)
+    fun plus(c: Color): Color = Color(r + c.r, g + c.g, b + c.b)
+    fun multiply(s: Color): Color = Color(r * s.r, g * s.g, b * s.b)
+
+    override fun toString(): String {
+        return "Color $r,$g,$b"
+    }
+
 }

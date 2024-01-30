@@ -1,8 +1,5 @@
 package com.zakgof.korc.tracer
 
-import com.zakgof.korc.material.Material
 import com.zakgof.korc.math.Vec3
 
-data class Intersection (val rayT: Double, val position: Vec3, val normal: Vec3, val material: Material) {
-
-}
+data class Intersection (val rayT: Double, val position: Vec3, val normal: Vec3)

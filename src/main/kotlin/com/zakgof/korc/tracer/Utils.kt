@@ -2,6 +2,7 @@ package com.zakgof.korc.tracer
 
 import com.zakgof.korc.math.Color
 import java.awt.image.BufferedImage
+import kotlin.math.min
 
 fun createImage(
     resX: Int,
@@ -15,9 +16,9 @@ fun createImage(
         println(pixX)
         for (pixY in 0..resY - 1) {
             val rgb = block(pixX, pixY)
-            color[0] = rgb.r * 255.0
-            color[1] = rgb.g * 255.0
-            color[2] = rgb.b * 255.0
+            color[0] = min(rgb.r, 1.0) * 255.0
+            color[1] = min(rgb.g, 1.0) * 255.0
+            color[2] = min(rgb.b, 1.0) * 255.0
             raster.setPixel(pixX, resY - 1 - pixY, color)
         }
     }

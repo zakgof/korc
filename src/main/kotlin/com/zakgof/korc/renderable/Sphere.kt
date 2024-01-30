@@ -1,12 +1,11 @@
 package com.zakgof.korc.renderable
 
-import com.zakgof.korc.material.DiffuseMaterial
 import com.zakgof.korc.math.Ray
 import com.zakgof.korc.math.Vec3
 import com.zakgof.korc.tracer.Intersection
 import kotlin.math.sqrt
 
-class Sphere(val center: Vec3, val radius: Double) : Renderable {
+class Sphere(val center: Vec3, val radius: Double) : Geometry {
 
     override fun intersection(ray: Ray): Intersection? {
 
@@ -27,8 +26,7 @@ class Sphere(val center: Vec3, val radius: Double) : Renderable {
                 return Intersection(
                     rayT = t1,
                     position = pos,
-                    normal = pos.minus(center).normalize(),
-                    material = DiffuseMaterial()
+                    normal = pos.minus(center).normalize()
                 )
             }
         }
